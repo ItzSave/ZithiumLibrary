@@ -8,6 +8,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Chat extends JavaPlugin {
 
 
+    /**
+     * This function will color any text messages.
+     * @param message The target message to be colored
+     * @return The colored message
+     */
     public static String color(String message) {
         Component component = MiniMessage.miniMessage().deserialize(message);
         return LegacyComponentSerializer.legacySection().serialize(component);
