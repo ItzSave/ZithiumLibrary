@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'net.zithium.library'
+version = '1.0.0' // Use a stable version number here
+
+repositories {
+    mavenCentral()
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+}
+
+dependencies {
+    implementation "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT" // Use 'implementation' for inclusion in the published artifact
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId = group
+            artifactId = project.name
+            version = project.version
+        }
+    }
+    repositories {
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+}

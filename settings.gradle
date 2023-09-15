@@ -1,0 +1,3 @@
+rootProject.name = 'ZithiumLibrary'
+
+include('chat')
