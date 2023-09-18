@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "net.zithium.library",
+    "module": "ZithiumLibrary",
+    "version": "1.0.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "ZithiumLibrary-1.0.2.jar",
+          "url": "ZithiumLibrary-1.0.2.jar",
+          "size": 261,
+          "sha512": "d9e1d7979aa88b78ada7563c2a7d8bfe1c97633e014fd72199174544377013382c46e4ba1c27ebad403e7d129f3f21798a8bc8eef38b1aaec834085a8ea039ef",
+          "sha256": "913799a2e860752b8753ac44fbcf401bf8332cb5f1c19d6af3f42bfa66e19e18",
+          "sha1": "ed9a487f0788b8c961a50257e1eeb74882ef5a39",
+          "md5": "3e63e4a2bdb382757e946dfc31f0fa11"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "ZithiumLibrary-1.0.2.jar",
+          "url": "ZithiumLibrary-1.0.2.jar",
+          "size": 261,
+          "sha512": "d9e1d7979aa88b78ada7563c2a7d8bfe1c97633e014fd72199174544377013382c46e4ba1c27ebad403e7d129f3f21798a8bc8eef38b1aaec834085a8ea039ef",
+          "sha256": "913799a2e860752b8753ac44fbcf401bf8332cb5f1c19d6af3f42bfa66e19e18",
+          "sha1": "ed9a487f0788b8c961a50257e1eeb74882ef5a39",
+          "md5": "3e63e4a2bdb382757e946dfc31f0fa11"
+        }
+      ]
+    }
+  ]
+}
