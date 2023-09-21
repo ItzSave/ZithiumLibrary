@@ -38,7 +38,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.extract-version.outputs.version }}
-          files: build/libs/*.jar
           release_name: Release ${{ steps.extract-version.outputs.version }}
           draft: false
           prerelease: false
+          assets: |
+            build/libs/*.jar
