@@ -19,9 +19,10 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
-      #- name: Get Version from build.gradle
-      #  id: extract-version
-      #  run: echo "::set-output name=version::$(cat build.gradle | grep -oP 'version = '\''\K[^'\'']+')"
+      - name: Get Version from build.gradle
+        id: extract-version
+        run: echo "::set-output name=version::$(cat build.gradle | grep -oP 'version = '\''\K[^'\'']+')"
+
 
       - name: Set Execute Permission for gradlew
         run: chmod +x ./gradlew
@@ -36,7 +37,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ steps.extract-version.outputs.version }}
           files: build/libs/*.jar
-          release_name: Release ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.extract-version.outputs.version }}
           draft: false
           prerelease: false
