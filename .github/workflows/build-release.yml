@@ -41,5 +41,5 @@ jobs:
           release_name: Release ${{ steps.extract-version.outputs.version }}
           draft: false
           prerelease: false
-          assets: |
-            build/libs/*.jar
+          asset_path: build/libs/*.jar
+
