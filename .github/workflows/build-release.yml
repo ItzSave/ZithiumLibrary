@@ -19,9 +19,10 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
-      - name: Read Version from build.gradle
-        id: version
-        run: echo ::set-output name=version::$(cat build.gradle | grep -oP 'version = \K'\''[^'\'']+'\'')
+      #- name: Get Version from build.gradle
+      #  id: extract-version
+      #  run: echo "::set-output name=version::$(cat build.gradle | grep -oP 'version = '\''\K[^'\'']+')"
+
 
       - name: Build JAR
         run: ./gradlew clean build
