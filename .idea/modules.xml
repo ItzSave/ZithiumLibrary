@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ZithiumLibrary.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ZithiumLibrary.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/chat.main.iml" />
     </modules>
   </component>
 </project>
