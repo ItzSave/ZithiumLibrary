@@ -50,4 +50,4 @@ jobs:
           files: ./build/libs/*.jar
           tag_name: v${{ steps.extract-version.outputs.version }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SECRET_KEY }}
