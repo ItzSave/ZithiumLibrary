@@ -33,13 +33,9 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./build/libs/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.extract-version.outputs.version }}
-          release_name: Release ${{ steps.extract-version.outputs.version }}
-          draft: false
-          prerelease: false
-          asset_path: build/libs/*.jar
 
