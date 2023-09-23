@@ -18,7 +18,9 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:1.5.21'
 
+    // For MiniMessage text formatting.
     implementation "net.kyori:adventure-text-minimessage:4.14.0"
+    implementation "net.kyori:adventure-text-serializer-legacy:4.14.0"
 }
 
 java {
