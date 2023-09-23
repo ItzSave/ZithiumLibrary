@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chat/ZithiumLibrary.chat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/chat/ZithiumLibrary.chat.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/chat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/chat.main.iml" />
     </modules>
