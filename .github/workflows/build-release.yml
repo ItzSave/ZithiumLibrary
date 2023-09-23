@@ -23,10 +23,14 @@ jobs:
         id: extract-version
         run: echo "::set-output name=version::$(cat build.gradle | grep -oP 'version = '\''\K[^'\'']+')"
 
+      - name: Configure Git Identity
+        run: |
+          git config --global user.email "save@zithium.net"
+          git config --global user.name "Austin"
+
 
       - name: Set Execute Permission for gradlew
         run: chmod +x ./gradlew
-
 
       - name: Build JAR
         run: ./gradlew clean build
