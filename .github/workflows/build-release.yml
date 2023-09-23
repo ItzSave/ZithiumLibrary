@@ -2,8 +2,8 @@ name: Build and Release JAR
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v1.*'
 
 jobs:
   build:
