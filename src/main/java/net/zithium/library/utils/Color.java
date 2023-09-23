@@ -3,7 +3,7 @@
  * It allows you to convert legacy color codes (e.g., "&1", "&a") into Adventure
  * components for creating colored text.
  */
-package net.zithium.chat;
+package net.zithium.library.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
