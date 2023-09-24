@@ -119,7 +119,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder withLore(List<String> lore, Object... replacements) {
         ItemMeta meta = this.ITEM_STACK.getItemMeta();
         List<String> coloredLore = new ArrayList<>();
-        lore.forEach((s) -> coloredLore.add(net.zithium.library.utils.Color.color(replace(s, replacements))));
+        lore.forEach((s) -> coloredLore.add(net.zithium.library.utils.Color.stringColor(replace(s, replacements))));
         meta.setLore(coloredLore);
         this.ITEM_STACK.setItemMeta(meta);
         return this;

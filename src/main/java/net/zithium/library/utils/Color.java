@@ -18,9 +18,20 @@ public final class Color extends JavaPlugin {
      * @param message The text message with legacy color codes.
      * @return The colorized message as a string.
      */
-    public static String color(String message) {
+    public static String stringColor(String message) {
         Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
         return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+    }
+
+    /**
+     * Colorizes a text message containing legacy color codes.
+     * The output is a Component instead of the usual String
+     *
+     * @param message The text message to color.
+     * @return The colorized message as a component
+     */
+    public static Component componentColor(String message){
+        return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
     }
 
     /**
