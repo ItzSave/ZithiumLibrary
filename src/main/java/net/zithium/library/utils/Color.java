@@ -1,8 +1,4 @@
-/**
- * This class provides utility methods for colorizing text messages in Minecraft.
- * It allows you to convert legacy color codes (e.g., "&1", "&a") into Adventure
- * components for creating colored text.
- */
+
 package net.zithium.library.utils;
 
 import net.kyori.adventure.text.Component;
@@ -10,13 +6,18 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * This class provides utility methods for colorizing text messages in Minecraft.
+ * It allows you to convert legacy color codes (e.g., "&1", "&a") into Adventure
+ * components for creating colored text.
+ */
 public final class Color extends JavaPlugin {
 
     /**
      * Colorizes a text message containing legacy color codes.
      *
      * @param message The text message with legacy color codes.
-     * @return The colorized message as a string.
+     * @return The colorized message as a plain string.
      */
     public static String stringColor(String message) {
         Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
@@ -25,12 +26,11 @@ public final class Color extends JavaPlugin {
 
     /**
      * Colorizes a text message containing legacy color codes.
-     * The output is a Component instead of the usual String
      *
      * @param message The text message to color.
-     * @return The colorized message as a component
+     * @return The colorized message as a Component.
      */
-    public static Component componentColor(String message){
+    public static Component componentColor(String message) {
         return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
     }
 
