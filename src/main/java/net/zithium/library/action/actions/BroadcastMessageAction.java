@@ -13,6 +13,6 @@ public class BroadcastMessageAction implements Action {
 
     @Override
     public void execute(Player player, String data) {
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendMessage(Color.stringColor(data)));
+        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Color.stringColor(data)));
     }
 }
