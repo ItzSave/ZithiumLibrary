@@ -11,8 +11,13 @@ public class BroadcastMessageAction implements Action {
         return "BROADCAST";
     }
 
+    /**
+     *
+     * @param player The player who is executing the action/
+     * @param message The message broadcast.
+     */
     @Override
-    public void execute(Player player, String data) {
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Color.stringColor(data)));
+    public void execute(Player player, String message) {
+        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendMessage(Color.stringColor(message)));
     }
 }
