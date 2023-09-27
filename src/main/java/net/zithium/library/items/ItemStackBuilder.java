@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unchecked", "deprecation", "unused"})
+@SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unused"})
 public class ItemStackBuilder {
 
     private final ItemStack ITEM_STACK;
