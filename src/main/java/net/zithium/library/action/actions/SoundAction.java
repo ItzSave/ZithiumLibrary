@@ -14,11 +14,11 @@ public class SoundAction implements Action {
     }
 
     @Override
-    public void execute(Player player, String data) {
+    public void execute(Player player, String sound) {
         try {
-            player.playSound(player.getLocation(), XSound.matchXSound(data).get().parseSound(), 1L, 1L);
+            player.playSound(player.getLocation(), XSound.matchXSound(sound).get().parseSound(), 1L, 1L);
         } catch (Exception ex) {
-            Bukkit.getLogger().log(Level.WARNING, "Invalid sound name in action: " + data.toLowerCase());
+            Bukkit.getLogger().log(Level.WARNING, "Invalid sound name in action: " + sound.toLowerCase());
         }
     }
 }

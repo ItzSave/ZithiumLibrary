@@ -11,7 +11,7 @@ public class ConsoleCommandAction implements Action {
     }
 
     @Override
-    public void execute(Player player, String data) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), data);
+    public void execute(Player player, String consoleCommand) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), consoleCommand);
     }
 }

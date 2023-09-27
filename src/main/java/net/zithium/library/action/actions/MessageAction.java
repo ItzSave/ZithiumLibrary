@@ -11,7 +11,7 @@ public class MessageAction implements Action {
     }
 
     @Override
-    public void execute(Player player, String data) {
-        player.sendMessage(Color.stringColor(data));
+    public void execute(Player player, String message) {
+        player.sendMessage(Color.stringColor(message));
     }
 }

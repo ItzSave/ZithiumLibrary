@@ -10,7 +10,7 @@ public class CommandAction implements Action {
     }
 
     @Override
-    public void execute(Player player, String data) {
-        player.chat(data.contains("/") ? data : "/" + data);
+    public void execute(Player player, String playerCommand) {
+        player.chat(playerCommand.contains("/") ? playerCommand : "/" + playerCommand);
     }
 }
