@@ -1,7 +1,10 @@
 package net.zithium.library.items;
 
+import net.zithium.library.utils.Color;
 import net.zithium.library.version.XMaterial;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -109,7 +112,7 @@ public class ItemStackBuilder {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
         List<String> coloredLore = new ArrayList<>();
         for (String s : lore) {
-            coloredLore.add(ChatColor.translateAlternateColorCodes('&', s));
+            coloredLore.add(Color.stringColor(s));
         }
         meta.setLore(coloredLore);
         ITEM_STACK.setItemMeta(meta);
@@ -162,7 +165,7 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder withColor(Color color) {
+    public ItemStackBuilder withColor(org.bukkit.Color color) {
         Material type = ITEM_STACK.getType();
         if (type == Material.LEATHER_BOOTS || type == Material.LEATHER_CHESTPLATE || type == Material.LEATHER_HELMET || type == Material.LEATHER_LEGGINGS) {
             LeatherArmorMeta meta = (LeatherArmorMeta) ITEM_STACK.getItemMeta();
