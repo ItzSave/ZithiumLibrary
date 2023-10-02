@@ -2,7 +2,6 @@ package net.zithium.library.items;
 
 import net.zithium.library.utils.Color;
 import net.zithium.library.version.XMaterial;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -93,7 +92,7 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder withName(String name) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        meta.setDisplayName(Color.stringColor(name));
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
