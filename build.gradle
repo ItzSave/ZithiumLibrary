@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.zithium.library'
-version = '1.0.6'
+version = '1.0.7'
 targetCompatibility = JavaVersion.VERSION_17
 sourceCompatibility = JavaVersion.VERSION_17
 
@@ -32,6 +32,16 @@ java {
 
 build {
     dependsOn(shadowJar)
+}
+
+shadowJar {
+    dependencies {
+        include(dependency("net.kyori:adventure-text-minimessage"))
+        include(dependency("net.kyori:adventure-text-serializer-legacy"))
+    }
+
+    relocate "net.kyori.adventure.text.minimessage", "net.zithium.library.shaded.minimessage"
+    relocate "net.kyori.adventure.text.serializer.legacy", "net.zithium.library.shaded.legacyserializer"
 }
 
 publishing {
