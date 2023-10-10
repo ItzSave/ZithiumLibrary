@@ -27,7 +27,7 @@ public final class Color extends JavaPlugin {
      */
     public static String stringColor(String message) {
         if (AdventureCheck.isMiniMessageCompatible()) {
-            Component componentMessage = MiniMessage.miniMessage().deserialize(message);
+            Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
             return LegacyComponentSerializer.legacySection().serialize(componentMessage);
         } else {
             return ChatColor.translateAlternateColorCodes('&', message);
