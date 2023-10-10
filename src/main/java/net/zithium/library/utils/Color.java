@@ -4,6 +4,8 @@ package net.zithium.library.utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.zithium.library.version.AdventureCheck;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -14,24 +16,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Color extends JavaPlugin {
 
     /**
-     * Colorizes a text message containing legacy color codes.
+     * Colorizes a text message containing legacy color codes or MiniMessage formatting.
      *
-     * @param message The text message with legacy color codes.
+     * <p>If MiniMessage is compatible, this method converts the provided message with MiniMessage
+     * and then serializes it to a legacy string format. If MiniMessage is not available, it
+     * falls back to translating legacy color codes using ChatColor.</p>
+     *
+     * @param message The text message with legacy color codes or MiniMessage formatting.
      * @return The colorized message as a plain string.
      */
     public static String stringColor(String message) {
-        Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
-        return LegacyComponentSerializer.legacySection().serialize(componentMessage);
-    }
-
-    /**
-     * Colorizes a text message containing legacy color codes.
-     *
-     * @param message The text message to color.
-     * @return The colorized message as a Component.
-     */
-    public static Component componentColor(String message) {
-        return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
+        if (AdventureCheck.isMiniMessageCompatible()) {
+            Component componentMessage = MiniMessage.miniMessage().deserialize(message);
+            return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+        } else {
+            return ChatColor.translateAlternateColorCodes('&', message);
+        }
     }
 
     /**
