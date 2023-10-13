@@ -19,17 +19,23 @@ public final class Color extends JavaPlugin {
      * Colorizes a text message containing legacy color codes or MiniMessage formatting.
      *
      * <p>If MiniMessage is compatible, this method converts the provided message with MiniMessage
-     * and then serializes it to a legacy string format. If MiniMessage is not available, it
-     * falls back to translating legacy color codes using ChatColor.</p>
+     * and then serializes it to a legacy string format. If MiniMessage is not available on the
+     * server, it falls back to translating legacy color codes using ChatColor.</p>
      *
      * @param message The text message with legacy color codes or MiniMessage formatting.
      * @return The colorized message as a plain string.
      */
     public static String stringColor(String message) {
         if (AdventureCheck.isMiniMessageCompatible()) {
-            Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
-            return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+            try {
+                Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
+                return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+            } catch (NoClassDefFoundError e) {
+                // MiniMessage is not available, fall back to using ChatColor
+                return ChatColor.translateAlternateColorCodes('&', message);
+            }
         } else {
+            // MiniMessage is not available, fall back to using ChatColor
             return ChatColor.translateAlternateColorCodes('&', message);
         }
     }
