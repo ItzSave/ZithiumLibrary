@@ -6,14 +6,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.zithium.library.version.AdventureCheck;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * This class provides utility methods for colorizing text messages in Minecraft.
  * It allows you to convert legacy color codes (e.g., "&1", "&a") into Adventure
  * components for creating colored text.
  */
-public final class Color extends JavaPlugin {
+public final class Color {
 
     /**
      * Colorizes a text message containing legacy color codes or MiniMessage formatting.
