@@ -34,7 +34,8 @@ public class ActionManager {
                 new BroadcastMessageAction(),
                 new CommandAction(),
                 new ConsoleCommandAction(),
-                new SoundAction()
+                new SoundAction(),
+                new TitleAction()
         );
     }
 
