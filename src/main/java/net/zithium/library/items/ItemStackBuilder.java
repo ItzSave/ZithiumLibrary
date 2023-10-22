@@ -1,9 +1,7 @@
 package net.zithium.library.items;
 
-import jdk.jfr.internal.Logger;
 import net.zithium.library.utils.Color;
 import net.zithium.library.version.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,7 +19,6 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 @SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unused"})
 public class ItemStackBuilder {
