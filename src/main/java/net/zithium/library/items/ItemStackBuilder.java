@@ -1,7 +1,9 @@
 package net.zithium.library.items;
 
+import jdk.jfr.internal.Logger;
 import net.zithium.library.utils.Color;
 import net.zithium.library.version.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,10 +13,15 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 @SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unused"})
 public class ItemStackBuilder {
@@ -54,6 +61,7 @@ public class ItemStackBuilder {
             builder.withGlow();
         }
 
+
         if (section.contains("item_flags")) {
             List<ItemFlag> flags = new ArrayList<>();
             section.getStringList("item_flags").forEach(text -> {
@@ -64,6 +72,22 @@ public class ItemStackBuilder {
                 }
             });
             builder.withFlags(flags.toArray(new ItemFlag[0]));
+        }
+
+        if (section.contains("potion")) {
+            ConfigurationSection potionSection = section.getConfigurationSection("potion");
+            PotionType potionType = PotionType.valueOf(potionSection.getString("type", "WATER"));
+            int duration = potionSection.getInt("duration", 1);
+            int amplifier = potionSection.getInt("amplifier", 0);
+
+            // Create a PotionEffect based on the configuration
+            PotionEffect potionEffect = new PotionEffect(
+                    PotionEffectType.getByName(potionType.name()),
+                    duration,
+                    amplifier
+            );
+
+            builder.withPotionEffect(potionEffect);
         }
 
         return builder;
@@ -174,6 +198,18 @@ public class ItemStackBuilder {
         } else {
             throw new IllegalArgumentException("withColor is only applicable for leather armor!");
         }
+    }
+
+    public ItemStackBuilder withPotionEffect(PotionEffect potionEffect) {
+        ItemMeta meta = ITEM_STACK.getItemMeta();
+        if (meta instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta) meta;
+            potionMeta.addCustomEffect(potionEffect, true);
+            ITEM_STACK.setItemMeta(potionMeta);
+        } else {
+            throw new IllegalArgumentException("withPotionEffect is only applicable to potion based items!");
+        }
+        return this;
     }
 
     private String replace(String message, Object... replacements) {
