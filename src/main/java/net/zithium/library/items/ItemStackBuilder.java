@@ -61,6 +61,10 @@ public class ItemStackBuilder {
             builder.withGlow();
         }
 
+        if (section.contains("model_data")) {
+            builder.withCustomData(section.getInt("model_data"));
+        }
+
 
         if (section.contains("item_flags")) {
             List<ItemFlag> flags = new ArrayList<>();
@@ -142,12 +146,19 @@ public class ItemStackBuilder {
         return this;
     }
 
+    public ItemStackBuilder withCustomData(int data) {
+        final ItemMeta meta = ITEM_STACK.getItemMeta();
+        meta.setCustomModelData(data);
+        ITEM_STACK.setItemMeta(meta);
+        return this;
+    }
+
     public ItemStackBuilder withLore(List<String> lore, Object... replacements) {
         ItemMeta meta = this.ITEM_STACK.getItemMeta();
         List<String> coloredLore = new ArrayList<>();
         lore.forEach((s) -> coloredLore.add(net.zithium.library.utils.Color.stringColor(replace(s, replacements))));
         meta.setLore(coloredLore);
-        this.ITEM_STACK.setItemMeta(meta);
+        ITEM_STACK.setItemMeta(meta);
         return this;
     }
 
