@@ -13,7 +13,7 @@ public class BroadcastMessageAction implements Action {
 
     /**
      *
-     * @param player The player who is executing the action/
+     * @param player The player who is executing the action
      * @param message The message broadcast.
      */
     @Override
