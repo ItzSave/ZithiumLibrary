@@ -13,12 +13,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.bukkit.Bukkit.getLogger;
 
 @SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unused"})
 public class ItemStackBuilder {
@@ -75,20 +78,16 @@ public class ItemStackBuilder {
             builder.withFlags(flags.toArray(new ItemFlag[0]));
         }
 
-        if (section.contains("potion")) {
-            ConfigurationSection potionSection = section.getConfigurationSection("potion");
-            PotionType potionType = PotionType.valueOf(potionSection.getString("type", "WATER"));
-            int duration = potionSection.getInt("duration", 1);
-            int amplifier = potionSection.getInt("amplifier", 0);
+        if (section.contains("potion_effect")) {
+            ConfigurationSection potionSection = section.getConfigurationSection("potion_effect");
+            String potionTypeName = potionSection.getString("type");
+            PotionEffectType potionType = PotionEffectType.getByName(potionTypeName);
 
-            // Create a PotionEffect based on the configuration
-            PotionEffect potionEffect = new PotionEffect(
-                    PotionEffectType.getByName(potionType.name()),
-                    duration,
-                    amplifier
-            );
-
-            builder.withPotionEffect(potionEffect);
+            if (potionType != null) {
+                builder.withTippedArrowPotionEffect(potionType, 1, 1);
+            } else {
+                getLogger().warning("Invalid potion effect type: " + potionTypeName);
+            }
         }
 
         return builder;
@@ -208,17 +207,20 @@ public class ItemStackBuilder {
         }
     }
 
-    public ItemStackBuilder withPotionEffect(PotionEffect potionEffect) {
-        ItemMeta meta = ITEM_STACK.getItemMeta();
-        if (meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-            potionMeta.addCustomEffect(potionEffect, true);
+    public ItemStackBuilder withTippedArrowPotionEffect(PotionEffectType type, int duration, int amplifier) {
+        if (ITEM_STACK.getType() == Material.TIPPED_ARROW) {
+            // Create a potion with the desired effect
+            PotionData potionData = new PotionData(PotionType.WATER);
+            PotionMeta potionMeta = (PotionMeta) ITEM_STACK.getItemMeta();
+            potionMeta.setBasePotionData(potionData);
+            potionMeta.addCustomEffect(new PotionEffect(type, duration, amplifier), true);
+
+            // Set the potion metadata to the tipped arrow
             ITEM_STACK.setItemMeta(potionMeta);
-        } else {
-            throw new IllegalArgumentException("withPotionEffect is only applicable to potion based items!");
         }
         return this;
     }
+
 
     private String replace(String message, Object... replacements) {
         for (int i = 0; i < replacements.length; i += 2) {
