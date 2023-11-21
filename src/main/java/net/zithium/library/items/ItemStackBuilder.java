@@ -1,7 +1,9 @@
 package net.zithium.library.items;
 
 import net.zithium.library.utils.Color;
+import net.zithium.library.version.AdventureCheck;
 import net.zithium.library.version.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,8 +22,6 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.bukkit.Bukkit.getLogger;
 
 @SuppressWarnings({"UnusedReturnValue", "ConstantConditions", "unused"})
 public class ItemStackBuilder {
@@ -86,7 +86,7 @@ public class ItemStackBuilder {
             if (potionType != null) {
                 builder.withTippedArrowPotionEffect(potionType, 1, 1);
             } else {
-                getLogger().warning("Invalid potion effect type: " + potionTypeName);
+                Bukkit.getServer().getLogger().warning("Invalid potion effect type: " + potionTypeName);
             }
         }
 
@@ -116,7 +116,12 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder withName(String name) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
-        meta.setDisplayName(Color.stringColor(name));
+
+        if (AdventureCheck.isMiniMessageCompatible()) {
+
+        } else {
+        }
+
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
