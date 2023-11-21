@@ -5,23 +5,25 @@ plugins {
 }
 
 group = 'net.zithium.library'
-version = '1.0.12'
-targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = JavaVersion.VERSION_1_8
+version = '1.1.0'
 
 repositories {
     mavenCentral()
-    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://libraries.minecraft.net/' }
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
     compileOnly 'com.mojang:authlib:1.5.21'
 
     // For MiniMessage text formatting.
     implementation "net.kyori:adventure-text-minimessage:4.14.0"
     implementation "net.kyori:adventure-text-serializer-legacy:4.14.0"
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 build {

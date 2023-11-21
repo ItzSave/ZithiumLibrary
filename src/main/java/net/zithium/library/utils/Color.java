@@ -4,7 +4,6 @@ package net.zithium.library.utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.zithium.library.version.AdventureCheck;
 import org.bukkit.ChatColor;
 
 /**
@@ -23,20 +22,25 @@ public final class Color {
      *
      * @param message The text message with legacy color codes or MiniMessage formatting.
      * @return The colorized message as a plain string.
+     * @since 1.0.0
      */
     public static String stringColor(String message) {
-        if (AdventureCheck.isMiniMessageCompatible()) {
-            try {
-                Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
-                return LegacyComponentSerializer.legacySection().serialize(componentMessage);
-            } catch (NoClassDefFoundError e) {
-                // MiniMessage is not available, fall back to using ChatColor
-                return ChatColor.translateAlternateColorCodes('&', message);
-            }
-        } else {
+        try {
+            Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
+            return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+        } catch (NoClassDefFoundError e) {
             // MiniMessage is not available, fall back to using ChatColor
             return ChatColor.translateAlternateColorCodes('&', message);
         }
+    }
+
+    /**
+     *
+     * @param message The raw message to format with MiniMessage
+     * @return The formatted component.
+     */
+    public static Component componentColor(String message) {
+        return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
     }
 
     /**
