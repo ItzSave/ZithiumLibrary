@@ -27,7 +27,6 @@ public final class Color {
     public static String stringColor(String message) {
         try {
             Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
-
             LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().hexColors().build();
             return serializer.serialize(componentMessage);
         } catch (NoClassDefFoundError e) {
