@@ -1,7 +1,6 @@
 package net.zithium.library.items;
 
 import net.zithium.library.utils.Color;
-import net.zithium.library.version.AdventureCheck;
 import net.zithium.library.version.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
@@ -97,11 +95,6 @@ public class ItemStackBuilder {
         return getItemStack(section, null);
     }
 
-    public ItemStackBuilder setType(Material material) {
-        ITEM_STACK.setType(material);
-        return this;
-    }
-
     public ItemStackBuilder withAmount(int amount) {
         ITEM_STACK.setAmount(amount);
         return this;
@@ -117,11 +110,12 @@ public class ItemStackBuilder {
     public ItemStackBuilder withName(String name) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
 
-        if (AdventureCheck.isMiniMessageCompatible()) {
-
-        } else {
+        if (ITEM_STACK.getType() == XMaterial.matchXMaterial(Material.AIR).parseMaterial()) {
+            return this;
         }
 
+
+        meta.setDisplayName(Color.stringColor(name));
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
@@ -137,39 +131,29 @@ public class ItemStackBuilder {
     }
 
     public ItemStackBuilder withLore(List<String> lore) {
-        final ItemMeta meta = ITEM_STACK.getItemMeta();
+        ItemMeta meta = this.ITEM_STACK.getItemMeta();
         List<String> coloredLore = new ArrayList<>();
-        for (String s : lore) {
-            coloredLore.add(Color.stringColor(s));
+
+
+        if (ITEM_STACK.getType() == XMaterial.matchXMaterial(Material.AIR).parseMaterial()) {
+            return this;
         }
+
+        for (String s : lore) {
+            coloredLore.add(Color.stringColor(s));  // Apply color to each lore line
+        }
+
         meta.setLore(coloredLore);
-        ITEM_STACK.setItemMeta(meta);
+        this.ITEM_STACK.setItemMeta(meta);
         return this;
     }
+
+
 
     public ItemStackBuilder withCustomData(int data) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
         meta.setCustomModelData(data);
         ITEM_STACK.setItemMeta(meta);
-        return this;
-    }
-
-    public ItemStackBuilder withLore(List<String> lore, Object... replacements) {
-        ItemMeta meta = this.ITEM_STACK.getItemMeta();
-        List<String> coloredLore = new ArrayList<>();
-        lore.forEach((s) -> coloredLore.add(net.zithium.library.utils.Color.stringColor(replace(s, replacements))));
-        meta.setLore(coloredLore);
-        ITEM_STACK.setItemMeta(meta);
-        return this;
-    }
-
-    public ItemStackBuilder withEnchantment(Enchantment enchantment, final int level) {
-        ITEM_STACK.addUnsafeEnchantment(enchantment, level);
-        return this;
-    }
-
-    public ItemStackBuilder withEnchantment(Enchantment enchantment) {
-        ITEM_STACK.addUnsafeEnchantment(enchantment, 1);
         return this;
     }
 
@@ -179,37 +163,6 @@ public class ItemStackBuilder {
         ITEM_STACK.setItemMeta(meta);
         ITEM_STACK.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
         return this;
-    }
-
-    public ItemStackBuilder withType(Material material) {
-        ITEM_STACK.setType(material);
-        return this;
-    }
-
-    public ItemStackBuilder clearLore() {
-        final ItemMeta meta = ITEM_STACK.getItemMeta();
-        meta.setLore(new ArrayList<>());
-        ITEM_STACK.setItemMeta(meta);
-        return this;
-    }
-
-    public ItemStackBuilder clearEnchantments() {
-        for (Enchantment enchantment : ITEM_STACK.getEnchantments().keySet()) {
-            ITEM_STACK.removeEnchantment(enchantment);
-        }
-        return this;
-    }
-
-    public ItemStackBuilder withColor(org.bukkit.Color color) {
-        Material type = ITEM_STACK.getType();
-        if (type == Material.LEATHER_BOOTS || type == Material.LEATHER_CHESTPLATE || type == Material.LEATHER_HELMET || type == Material.LEATHER_LEGGINGS) {
-            LeatherArmorMeta meta = (LeatherArmorMeta) ITEM_STACK.getItemMeta();
-            meta.setColor(color);
-            ITEM_STACK.setItemMeta(meta);
-            return this;
-        } else {
-            throw new IllegalArgumentException("withColor is only applicable for leather armor!");
-        }
     }
 
     public ItemStackBuilder withTippedArrowPotionEffect(PotionEffectType type, int duration, int amplifier) {

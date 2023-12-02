@@ -27,7 +27,9 @@ public final class Color {
     public static String stringColor(String message) {
         try {
             Component componentMessage = MiniMessage.miniMessage().deserialize(replaceLegacy(message));
-            return LegacyComponentSerializer.legacySection().serialize(componentMessage);
+
+            LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().hexColors().build();
+            return serializer.serialize(componentMessage);
         } catch (NoClassDefFoundError e) {
             // MiniMessage is not available, fall back to using ChatColor
             return ChatColor.translateAlternateColorCodes('&', message);
@@ -35,7 +37,6 @@ public final class Color {
     }
 
     /**
-     *
      * @param message The raw message to format with MiniMessage
      * @return The formatted component.
      */
@@ -50,7 +51,7 @@ public final class Color {
      * @param legacyText The text containing legacy color codes.
      * @return The text with Adventure format codes.
      */
-    private static String replaceLegacy(String legacyText) {
+    public static String replaceLegacy(String legacyText) {
         return legacyText
                 .replaceAll("&1", "<dark_blue>")
                 .replaceAll("&2", "<dark_green>")
