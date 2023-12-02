@@ -1,94 +1,52 @@
 package net.zithium.library.items;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.zithium.library.version.XMaterial;
-import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Base64;
 import java.util.UUID;
 
 public class Base64Util {
 
-    private static final Map<String, ItemStack> cache = new HashMap<>();
+    private static final UUID RANDOM_UUID = UUID.fromString("92864445-51c5-4c3b-9039-517c9927d1b4");
 
     public static ItemStack getBaseHead(String data) {
-        if (cache.containsKey(data)) return cache.get(data);
 
         ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-        profile.getProperties().put("textures", new Property("textures", data));
-        Field profileField;
-        try {
-            profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-        }
+        final SkullMeta meta = (SkullMeta) head.getItemMeta();
+        setBase64ToSkullMeta(data, meta);
         head.setItemMeta(meta);
-        cache.put(data, head);
         return head;
     }
 
-    private static String getUrl(final String u) {
-        String uuid;
-        uuid = StringUtils.replace(u, "-", "");
-        URL url = null;
 
+    private static PlayerProfile getProfileBase64(String base64) {
+        PlayerProfile profile = Bukkit.createPlayerProfile(RANDOM_UUID); // Get a new player profile
+        PlayerTextures textures = profile.getTextures();
+        URL urlObject;
         try {
-            url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            urlObject = getUrlFromBase64(base64);
+        } catch (MalformedURLException exception) {
+            throw new RuntimeException("Invalid URL", exception);
         }
-
-        try {
-            InputStreamReader reader = new InputStreamReader(url.openStream());
-            JsonObject json = new JsonParser().parse(reader).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-            return json.get("value").getAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static GameProfile getGameProfile(String url) {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", url));
+        textures.setSkin(urlObject); // Set the skin of the player profile to the URL
+        profile.setTextures(textures); // Set the textures back to the profile
         return profile;
     }
 
-    public static ItemStack getSkull(UUID uuid) {
-        if (cache.containsKey(uuid.toString())) return cache.get(uuid.toString());
+    private static URL getUrlFromBase64(String base64) throws MalformedURLException {
+        String decoded = new String(Base64.getDecoder().decode(base64));
+        return new URL(decoded.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), decoded.length() - "\"}}}".length()));
+    }
 
-        String skinUrl = getUrl(uuid.toString());
-        ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
-        if (skinUrl.isEmpty()) return head;
-
-        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = getGameProfile(skinUrl);
-        Field profileField;
-        try {
-            profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
-            e1.printStackTrace();
-        }
-        head.setItemMeta(headMeta);
-        cache.put(uuid.toString(), head);
-        return head;
+    private static void setBase64ToSkullMeta(String base64, SkullMeta meta) {
+        meta.setOwnerProfile(getProfileBase64(base64));
     }
 
 }
