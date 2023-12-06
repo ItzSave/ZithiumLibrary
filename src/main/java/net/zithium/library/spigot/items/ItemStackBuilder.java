@@ -1,4 +1,4 @@
-package net.zithium.library.items;
+package net.zithium.library.spigot.items;
 
 import net.zithium.library.utils.Color;
 import net.zithium.library.version.XMaterial;
