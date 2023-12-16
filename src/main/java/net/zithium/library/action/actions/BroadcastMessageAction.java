@@ -1,7 +1,7 @@
 package net.zithium.library.action.actions;
 
 import net.zithium.library.action.Action;
-import net.zithium.library.utils.Color;
+import net.zithium.library.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -18,6 +18,6 @@ public class BroadcastMessageAction implements Action {
      */
     @Override
     public void execute(Player player, String message) {
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendMessage(Color.stringColor(message)));
+        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendMessage(ColorUtil.color(message)));
     }
 }

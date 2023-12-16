@@ -1,6 +1,6 @@
-package net.zithium.library.spigot.items;
+package net.zithium.library.items;
 
-import net.zithium.library.utils.Color;
+import net.zithium.library.utils.ColorUtil;
 import net.zithium.library.version.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -115,7 +115,7 @@ public class ItemStackBuilder {
         }
 
 
-        meta.setDisplayName(Color.stringColor(name));
+        meta.setDisplayName(ColorUtil.color(name));
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
@@ -140,7 +140,7 @@ public class ItemStackBuilder {
         }
 
         for (String s : lore) {
-            coloredLore.add(Color.stringColor(s));  // Apply color to each lore line
+            coloredLore.add(ColorUtil.color(s));  // Apply color to each lore line
         }
 
         meta.setLore(coloredLore);
