@@ -1,4 +1,4 @@
-package net.zithium.library.spigot.items;
+package net.zithium.library.items;
 
 import net.zithium.library.version.XMaterial;
 import org.bukkit.Bukkit;
