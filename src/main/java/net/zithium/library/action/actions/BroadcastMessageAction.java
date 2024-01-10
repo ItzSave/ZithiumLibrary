@@ -1,5 +1,6 @@
 package net.zithium.library.action.actions;
 
+import net.kyori.adventure.text.Component;
 import net.zithium.library.action.Action;
 import net.zithium.library.utils.ColorUtil;
 import org.bukkit.Bukkit;
@@ -12,12 +13,11 @@ public class BroadcastMessageAction implements Action {
     }
 
     /**
-     *
-     * @param player The player who is executing the action
+     * @param player  The player who is executing the action
      * @param message The message broadcast.
      */
     @Override
     public void execute(Player player, String message) {
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendMessage(ColorUtil.color(message)));
+        Bukkit.broadcast(Component.text(ColorUtil.color(message)));
     }
 }
