@@ -1,7 +1,5 @@
 package net.zithium.library.utils;
 
-import org.bukkit.ChatColor;
-
 import java.util.List;
 import java.util.regex.Pattern;
 
