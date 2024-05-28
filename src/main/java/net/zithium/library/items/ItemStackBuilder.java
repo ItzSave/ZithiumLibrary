@@ -1,8 +1,7 @@
 package net.zithium.library.items;
 
-import net.zithium.library.utils.Color;
+import net.zithium.library.utils.ColorUtil;
 import net.zithium.library.version.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,6 +16,8 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.Nullable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,11 @@ public class ItemStackBuilder {
             builder.withCustomData(section.getInt("model_data"));
         }
 
+        if (section.contains("potion_effect")) {
+            @Nullable String potionEffect = section.getString("potion_effect");
+            builder.withPotionEffect(PotionEffectType.getByName(potionEffect));
+        }
+
 
         if (section.contains("item_flags")) {
             List<ItemFlag> flags = new ArrayList<>();
@@ -75,19 +81,6 @@ public class ItemStackBuilder {
             });
             builder.withFlags(flags.toArray(new ItemFlag[0]));
         }
-
-        if (section.contains("potion_effect")) {
-            ConfigurationSection potionSection = section.getConfigurationSection("potion_effect");
-            String potionTypeName = potionSection.getString("type");
-            PotionEffectType potionType = PotionEffectType.getByName(potionTypeName);
-
-            if (potionType != null) {
-                builder.withTippedArrowPotionEffect(potionType, 1, 1);
-            } else {
-                Bukkit.getServer().getLogger().warning("Invalid potion effect type: " + potionTypeName);
-            }
-        }
-
         return builder;
     }
 
@@ -114,8 +107,7 @@ public class ItemStackBuilder {
             return this;
         }
 
-
-        meta.setDisplayName(Color.stringColor(name));
+        meta.setDisplayName(ColorUtil.color(name));
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
@@ -140,15 +132,13 @@ public class ItemStackBuilder {
         }
 
         for (String s : lore) {
-            coloredLore.add(Color.stringColor(s));  // Apply color to each lore line
+            coloredLore.add(ColorUtil.color(s));  // Apply color to each lore line
         }
 
         meta.setLore(coloredLore);
         this.ITEM_STACK.setItemMeta(meta);
         return this;
     }
-
-
 
     public ItemStackBuilder withCustomData(int data) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
@@ -165,20 +155,20 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder withTippedArrowPotionEffect(PotionEffectType type, int duration, int amplifier) {
-        if (ITEM_STACK.getType() == Material.TIPPED_ARROW) {
-            // Create a potion with the desired effect
-            PotionData potionData = new PotionData(PotionType.WATER);
-            PotionMeta potionMeta = (PotionMeta) ITEM_STACK.getItemMeta();
-            potionMeta.setBasePotionData(potionData);
-            potionMeta.addCustomEffect(new PotionEffect(type, duration, amplifier), true);
+    public ItemStackBuilder withPotionEffect(PotionEffectType type) {
+        final ItemMeta meta = ITEM_STACK.getItemMeta();
+        if (ITEM_STACK.getType() != Material.TIPPED_ARROW && !ITEM_STACK.getType().name().contains("POTION"))
+            return this;
+        final PotionMeta potionMeta = (PotionMeta) ITEM_STACK.getItemMeta();
 
-            // Set the potion metadata to the tipped arrow
-            ITEM_STACK.setItemMeta(potionMeta);
+        if (ITEM_STACK.getType() == Material.TIPPED_ARROW) {
+            potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(type)));
+        } else {
+            potionMeta.addCustomEffect(new PotionEffect(type, 1, 1), true);
         }
+
         return this;
     }
-
 
     private String replace(String message, Object... replacements) {
         for (int i = 0; i < replacements.length; i += 2) {

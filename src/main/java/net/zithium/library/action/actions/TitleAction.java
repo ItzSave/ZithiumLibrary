@@ -1,7 +1,7 @@
 package net.zithium.library.action.actions;
 
 import net.zithium.library.action.Action;
-import net.zithium.library.utils.Color;
+import net.zithium.library.utils.ColorUtil;
 import net.zithium.library.version.Titles;
 import net.zithium.library.version.XMaterial;
 import org.bukkit.entity.Player;
@@ -22,8 +22,8 @@ public class TitleAction implements Action {
     public void execute(Player player, String data) {
         String[] args = data.split(";");
 
-        String mainTitle = Color.stringColor(args[0]);
-        String subTitle = Color.stringColor(args[1]);
+        String mainTitle = ColorUtil.color(args[0]);
+        String subTitle = ColorUtil.color(args[1]);
 
         int fadeIn;
         int stay;
