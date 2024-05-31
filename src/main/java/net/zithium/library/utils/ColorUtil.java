@@ -33,26 +33,44 @@ public class ColorUtil {
         return LEGACY_HEX_SERIALIZER.serialize(component);
     }
 
+    /**
+     * Replaces legacy formatting codes in the input string with corresponding HTML tags or values.
+     * Legacy formatting codes are denoted by '&' or '§' followed by a character representing a color or decoration.
+     * The replacement is performed according to the mapping defined in the LegacyComponentSerializer.
+     *
+     * @param input the input string containing legacy formatting codes
+     * @return the input string with legacy formatting codes replaced by HTML tags or values
+     */
     public static String replaceLegacyWithTags(String input) {
+        // Replace legacy RGB color codes with the RGB_REPLACEMENT string
         String output = LEGACY_RGB_PATTERN.matcher(input).replaceAll(RGB_REPLACEMENT);
+        // Replace legacy plugin RGB color codes with the RGB_REPLACEMENT string
         output = LEGACY_PLUGIN_RGB_PATTERN.matcher(output).replaceAll(RGB_REPLACEMENT);
 
+        // Iterate over each legacy color code
         for (char legacyCode : LEGACY_COLOR_CODES) {
+            // Parse the legacy formatting code using LegacyComponentSerializer
             LegacyFormat format = LegacyComponentSerializer.parseChar(legacyCode);
+            // If the format is null, skip to the next code
             if (format == null) continue;
 
+            // If the format specifies a color, replace the legacy code with corresponding HTML color tag
             if (format.color() != null)
                 output = output.replaceAll("[&§]" + legacyCode, "<" + format.color().asHexString() + ">");
 
+            // If the format specifies a decoration, replace the legacy code with corresponding HTML decoration tag
             if (format.decoration() != null)
                 output = output.replaceAll("[&§]" + legacyCode, "<" + format.decoration().name() + ">");
 
+            // If the format specifies a reset, replace the legacy code with "<reset>"
             if (format.reset())
                 output = output.replaceAll("[&§]" + legacyCode, "<reset>");
         }
 
+        // Return the output string with legacy formatting codes replaced by HTML tags or values
         return output;
     }
+
 
     public static Component componentColor(String component) {
         return MiniMessage.miniMessage().deserialize(replaceLegacy(component));
