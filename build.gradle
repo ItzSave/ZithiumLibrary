@@ -1,11 +1,11 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.github.goooler.shadow' version '8.1.8'
 }
 
 group = 'net.zithium.library'
-version = '2.0.5'
+version = '2.1.0'
 
 repositories {
     mavenCentral()
@@ -38,6 +38,7 @@ shadowJar {
 
     relocate "net.kyori.adventure.text.minimessage", "net.zithium.library.shaded.minimessage"
     relocate "net.kyori.adventure.text.serializer.legacy", "net.zithium.library.shaded.legacyserializer"
+    archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
 publishing {
