@@ -1,9 +1,13 @@
 package net.zithium.library.items;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import net.zithium.library.utils.ColorUtil;
 import net.zithium.library.version.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -26,6 +30,8 @@ import java.util.List;
 public class ItemStackBuilder {
 
     private final ItemStack ITEM_STACK;
+    private static final Multimap<Attribute, AttributeModifier> EMPTY_ATTRIBUTES_MAP =
+            MultimapBuilder.hashKeys().hashSetValues().build();
 
     public ItemStackBuilder(ItemStack item) {
         this.ITEM_STACK = item;
@@ -34,6 +40,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder(Material material) {
         this.ITEM_STACK = new ItemStack(material);
     }
+
 
     public static ItemStackBuilder getItemStack(ConfigurationSection section, Player player) {
         ItemStack item = XMaterial.matchXMaterial(section.getString("material").toUpperCase()).get().parseItem();
@@ -95,7 +102,18 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder withFlags(ItemFlag... flags) {
         ItemMeta meta = ITEM_STACK.getItemMeta();
-        meta.addItemFlags(flags);
+
+
+        if (meta != null) {
+            meta.addItemFlags(flags);
+            for (ItemFlag itemFlag : flags) {
+                if (itemFlag == ItemFlag.HIDE_ATTRIBUTES) {
+                    meta.setAttributeModifiers(EMPTY_ATTRIBUTES_MAP);
+                    break;
+                }
+            }
+        }
+
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
