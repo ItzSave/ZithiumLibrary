@@ -33,6 +33,21 @@ public class ConfigHandler {
     }
 
     /**
+     * Constructs a new ConfigHandler with a specified file path.
+     *
+     * @param plugin The JavaPlugin instance that owns this configuration.
+     * @param path   The directory where the configuration file should be stored.
+     * @param name   The name of the YAML configuration file (can include or exclude ".yml").
+     */
+    public ConfigHandler(JavaPlugin plugin, final File path, final String name) {
+        this.plugin = plugin;
+        this.name = name.endsWith(".yml") ? name : name + ".yml";
+        this.file = new File(path, this.name);
+        this.configuration = new YamlConfiguration();
+    }
+
+
+    /**
      * Saves the default configuration if the file does not exist.
      * Displays a warning and disables the plugin if there's an error loading the configuration.
      */
@@ -70,9 +85,19 @@ public class ConfigHandler {
     /**
      * Reloads the configuration from the file.
      */
+    /**
+     * Reloads the configuration from the file.
+     * Logs an error if the file cannot be loaded.
+     */
     public void reload() {
-        configuration = YamlConfiguration.loadConfiguration(file);
+        try {
+            configuration = YamlConfiguration.loadConfiguration(file);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to reload configuration: " + name);
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * Gets the FileConfiguration associated with this ConfigHandler.
