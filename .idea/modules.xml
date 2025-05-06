@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Zithium Plugins.ZithiumLibrary.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Zithium Plugins.ZithiumLibrary.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Zithium Plugins.ZithiumLibrary.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Zithium Plugins.ZithiumLibrary.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ZithiumLibrary.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ZithiumLibrary.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ZithiumLibrary.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.zithium.library.ZithiumLibrary.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.zithium.library.ZithiumLibrary.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.zithium.library.ZithiumLibrary.test.iml" filepath="$PROJECT_DIR$/.idea/modules/net.zithium.library.ZithiumLibrary.test.iml" />
     </modules>
   </component>
 </project>
