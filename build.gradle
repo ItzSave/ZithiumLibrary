@@ -18,8 +18,8 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.21'
 
     // For MiniMessage text formatting.
-    implementation "net.kyori:adventure-text-minimessage:4.20.0"
-    implementation "net.kyori:adventure-text-serializer-legacy:4.20.0"
+    implementation "net.kyori:adventure-text-minimessage:4.21.0"
+    implementation "net.kyori:adventure-text-serializer-legacy:4.21.0"
 }
 
 java {
