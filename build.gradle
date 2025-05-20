@@ -36,8 +36,8 @@ shadowJar {
         include(dependency("net.kyori:adventure-text-serializer-legacy"))
     }
 
-    relocate "net.kyori.adventure.text.minimessage", "net.zithium.library.shaded.minimessage"
-    relocate "net.kyori.adventure.text.serializer.legacy", "net.zithium.library.shaded.legacyserializer"
+    
+    relocate "net.kyori.adventure.text", "net.zithium.library.shaded.adventure"
     archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
