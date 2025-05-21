@@ -37,7 +37,7 @@ shadowJar {
     }
 
     
-    relocate "net.kyori.adventure.text", "net.zithium.library.shaded.adventure"
+    relocate "net.kyori.adventure", "net.zithium.library.shaded.adventure"
     archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
