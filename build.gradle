@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.zithium.library'
-version = '2.1.8-SNAPSHOT'
+version = '2.1.9'
 
 var adventureVersion = '4.21.0'
 
