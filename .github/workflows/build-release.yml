@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"  # Skip build if commit message contains [ci skip]
     runs-on: ubuntu-latest
 
     steps:
@@ -19,15 +20,25 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
       - name: Get Version from build.gradle
         id: extract-version
-        run: echo "::set-output name=version::$(cat build.gradle | grep -oP 'version = '\''\K[^'\'']+')"
+        run: |
+          echo "version=$(grep -oP \"version = '\\K[^']+\" build.gradle)" >> $GITHUB_OUTPUT
 
       - name: Configure Git Identity
         run: |
           git config --global user.email "save@zithium.net"
           git config --global user.name "Austin"
-
 
       - name: Set Execute Permission for gradlew
         run: chmod +x ./gradlew
@@ -47,7 +58,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./build/libs/*.jar
+          name: v${{ steps.extract-version.outputs.version }}
           tag_name: v${{ steps.extract-version.outputs.version }}
+          files: ./build/libs/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
