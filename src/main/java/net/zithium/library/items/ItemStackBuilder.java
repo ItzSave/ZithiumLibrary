@@ -1,9 +1,9 @@
 package net.zithium.library.items;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import net.zithium.library.utils.ColorUtil;
-import net.zithium.library.version.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;

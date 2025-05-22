@@ -1,9 +1,9 @@
 package net.zithium.library.action.actions;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.messages.Titles;
 import net.zithium.library.action.Action;
 import net.zithium.library.utils.ColorUtil;
-import net.zithium.library.version.Titles;
-import net.zithium.library.version.XMaterial;
 import org.bukkit.entity.Player;
 
 /*

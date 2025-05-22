@@ -1,7 +1,7 @@
 package net.zithium.library.action.actions;
 
+import com.cryptomorin.xseries.XSound;
 import net.zithium.library.action.Action;
-import net.zithium.library.version.XSound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -20,5 +20,6 @@ public class SoundAction implements Action {
         } catch (Exception ex) {
             Bukkit.getLogger().log(Level.WARNING, "Invalid sound name in action: " + sound.toLowerCase());
         }
+
     }
 }

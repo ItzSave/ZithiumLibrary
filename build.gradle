@@ -20,6 +20,9 @@ dependencies {
     // For MiniMessage text formatting.
     implementation "net.kyori:adventure-text-minimessage:4.21.0"
     implementation "net.kyori:adventure-text-serializer-legacy:4.21.0"
+
+    // XMaterial, XSound, ReflectionUtils, ActionBar
+    implementation "com.github.cryptomorin:XSeries:13.2.0"
 }
 
 java {
@@ -39,6 +42,7 @@ shadowJar {
 
 
     relocate "net.kyori.adventure", "net.zithium.library.shaded.adventure"
+    relocate "com.cryptomorin.xseries", "net.zithium.library.shaded.xseries"
     archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
