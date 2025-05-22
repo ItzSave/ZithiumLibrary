@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.zithium.library'
-version = '2.1.5'
+version = '2.1.7'
 
 repositories {
     mavenCentral()
@@ -36,8 +36,9 @@ shadowJar {
         include(dependency("net.kyori:adventure-text-serializer-legacy"))
     }
 
-    
-    relocate "net.kyori.adventure.text", "net.zithium.library.shaded.adventure"
+
+
+    relocate "net.kyori.adventure", "net.zithium.library.shaded.adventure"
     archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
