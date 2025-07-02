@@ -3,7 +3,9 @@ package net.zithium.library.items;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import net.kyori.adventure.text.Component;
 import net.zithium.library.utils.ColorUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
@@ -45,7 +47,7 @@ public class ItemStackBuilder {
     public static ItemStackBuilder getItemStack(ConfigurationSection section, Player player) {
         ItemStack item = XMaterial.matchXMaterial(section.getString("material").toUpperCase()).get().parseItem();
 
-        if (item.getType() == XMaterial.PLAYER_HEAD.parseMaterial() && section.contains("base64")) {
+        if (item.getType() == XMaterial.PLAYER_HEAD.get() && section.contains("base64")) {
             item = Base64Util.getBaseHead(section.getString("base64")).clone();
         }
 
@@ -55,13 +57,18 @@ public class ItemStackBuilder {
             builder.withAmount(section.getInt("amount"));
         }
 
+        if (section.contains("username") && player != null) {
+            builder.setSkullOwner(section.getString("username").replace("%player%", player.getName()));
+        }
+
         if (section.contains("display_name")) {
-            builder.withName(section.getString("display_name"));
+            builder.withName(section.getString("display_name"), player);
         }
 
         if (section.contains("lore")) {
-            builder.withLore(section.getStringList("lore"));
+            builder.withLore(section.getStringList("lore"), player);
         }
+
 
         if (section.contains("glow") && section.getBoolean("glow")) {
             builder.withGlow();
@@ -75,7 +82,6 @@ public class ItemStackBuilder {
             @Nullable String potionEffect = section.getString("potion_effect");
             builder.withPotionEffect(PotionEffectType.getByName(potionEffect));
         }
-
 
         if (section.contains("item_flags")) {
             List<ItemFlag> flags = new ArrayList<>();
@@ -119,21 +125,26 @@ public class ItemStackBuilder {
     }
 
     public ItemStackBuilder withName(String name) {
-        final ItemMeta meta = ITEM_STACK.getItemMeta();
+        return withName(name, null);
+    }
 
-        if (ITEM_STACK.getType() == XMaterial.matchXMaterial(Material.AIR).parseMaterial()) {
+    public ItemStackBuilder withName(String name, @Nullable Player player) {
+        final ItemMeta meta = ITEM_STACK.getItemMeta();
+        if (ITEM_STACK.getType() == XMaterial.matchXMaterial(Material.AIR).get()) {
             return this;
         }
-
-        meta.setDisplayName(ColorUtil.color(name));
+        String parsedName = parsePlaceholders(player, name);
+        meta.displayName(Component.text(ColorUtil.color(parsedName)));
         ITEM_STACK.setItemMeta(meta);
         return this;
     }
 
-    public ItemStackBuilder setSkullOwner(OfflinePlayer offlinePlayer) {
+
+    public ItemStackBuilder setSkullOwner(String owner) {
         try {
             SkullMeta im = (SkullMeta) ITEM_STACK.getItemMeta();
-            im.setOwningPlayer(offlinePlayer);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
+            im.setOwningPlayer(player);
             ITEM_STACK.setItemMeta(im);
         } catch (ClassCastException ignored) {
         }
@@ -141,22 +152,27 @@ public class ItemStackBuilder {
     }
 
     public ItemStackBuilder withLore(List<String> lore) {
-        ItemMeta meta = this.ITEM_STACK.getItemMeta();
-        List<String> coloredLore = new ArrayList<>();
+        return withLore(lore, null);
+    }
 
+    public ItemStackBuilder withLore(List<String> lore, @Nullable Player player) {
+        ItemMeta meta = ITEM_STACK.getItemMeta();
+        List<String> coloredLore = new ArrayList<>();
 
         if (ITEM_STACK.getType() == XMaterial.matchXMaterial(Material.AIR).parseMaterial()) {
             return this;
         }
 
         for (String s : lore) {
-            coloredLore.add(ColorUtil.color(s));  // Apply color to each lore line
+            String parsedLine = parsePlaceholders(player, s);
+            coloredLore.add(ColorUtil.color(parsedLine));
         }
 
         meta.setLore(coloredLore);
-        this.ITEM_STACK.setItemMeta(meta);
+        ITEM_STACK.setItemMeta(meta);
         return this;
     }
+
 
     public ItemStackBuilder withCustomData(int data) {
         final ItemMeta meta = ITEM_STACK.getItemMeta();
@@ -200,4 +216,16 @@ public class ItemStackBuilder {
     public ItemStack build() {
         return ITEM_STACK;
     }
+
+    private String parsePlaceholders(@Nullable Player player, String text) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && player != null) {
+            try {
+                return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, text);
+            } catch (Exception ignored) {
+                // Ignore errors from PlaceholderAPI calls as we don't care about them.
+            }
+        }
+        return text;
+    }
+
 }
