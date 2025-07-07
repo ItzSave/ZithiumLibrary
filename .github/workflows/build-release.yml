@@ -33,7 +33,8 @@ jobs:
       - name: Get Version from build.gradle
         id: extract-version
         run: |
-          echo "version=$(grep -oP \"version = '\\K[^']+\" build.gradle)" >> $GITHUB_OUTPUT
+          version=$(grep -oP "version = '\\K[^']+" build.gradle)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Configure Git Identity
         run: |
