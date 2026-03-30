@@ -122,6 +122,8 @@ public class ItemStackBuilder {
 
         ITEM_STACK.setItemMeta(meta);
         return this;
+
+
     }
 
     public ItemStackBuilder withName(String name) {

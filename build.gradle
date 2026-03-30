@@ -1,11 +1,11 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.gradleup.shadow' version '8.3.5'
+    id 'com.gradleup.shadow' version '9.0.2'
 }
 
 group = 'net.zithium.library'
-version = '2.1.12'
+version = '2.1.13'
 
 repositories {
     mavenCentral()
@@ -19,11 +19,10 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.21'
 
     // For MiniMessage text formatting.
-    implementation "net.kyori:adventure-text-minimessage:4.23.0"
-    implementation "net.kyori:adventure-text-serializer-legacy:4.23.0"
+    implementation "net.kyori:adventure-api:4.24.0"
 
     // XMaterial, XSound, ReflectionUtils, ActionBar
-    implementation "com.github.cryptomorin:XSeries:13.3.3"
+    implementation("com.github.cryptomorin:XSeries:13.3.3")
 
     // PlaceholderAPI does not need to be shaded as it's optional.
     compileOnly 'me.clip:placeholderapi:2.11.6'
@@ -33,36 +32,39 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-build {
+// Ensure build depends on shadowJar
+tasks.build {
     dependsOn(shadowJar)
 }
-
 shadowJar {
-    dependencies {
-        include(dependency("net.kyori:adventure-text-minimessage"))
-        include(dependency("net.kyori:adventure-text-serializer-legacy"))
-    }
+    archiveFileName = "ZithiumLibrary-${project.version}.jar"
 
-
-
+    relocate "com.cryptomorin.xseries", "net.zithium.library.utils.version"
     relocate "net.kyori.adventure", "net.zithium.library.shaded.adventure"
-    relocate "com.cryptomorin.xseries", "net.zithium.library.shaded.xseries"
-    archiveFileName="ZithiumLibrary-${project.version}.jar"
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
-
             groupId = group
             artifactId = project.name
             version = project.version
+
+            // Publish ONLY the shadow jar
+            artifact(tasks.shadowJar) {
+                classifier = null // removes "-all"
+            }
         }
     }
     repositories {
         maven {
-            url 'https://jitpack.io'
+            name = "ZithiumReleases"
+            url = uri("https://repo.zithium.net/releases")
+
+            credentials {
+                username = project.findProperty("repoUser")
+                password = project.findProperty("repoPassword")
+            }
         }
     }
 }
